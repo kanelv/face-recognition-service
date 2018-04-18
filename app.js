@@ -12,9 +12,11 @@ mongoose.connect(dbConfig.url)
     console.log("Could not connect to the database");
     process.exit();
 });
+
+const app = express();
 app.use(logger('dev'));
 
-require('./routes/image.route');
+require('./routes/image.route')(app);
 app.listen('3000', err => {
     console.error("Server listening on localhost:3000");
 });

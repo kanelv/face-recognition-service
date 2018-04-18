@@ -7,7 +7,7 @@ exports.create = (req, res) => {
 
     if (!req.files) {
         return res.status(400).send({
-            message: "Image can not be empty"
+            message: "No files ware uploaded"
         });
     } else { 
         console.log(req.files); 
@@ -20,7 +20,7 @@ exports.create = (req, res) => {
     const image = new Image({
         idUser: idUser || "Unid User",
         idImg: idImg,
-        imgPath: imgPath,
+        imgPath: imgPath
     });
     imageFile.mv(imgPath, (err) => {
         if (err) return res.status(500).send(err);

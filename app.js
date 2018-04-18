@@ -1,5 +1,6 @@
 const express = require('express');
 const logger = require('morgan');
+const fileUpload = require('express-fileupload');
 
 // Configuring the database
 const dbConfig = require('./config/database.config');
@@ -15,7 +16,7 @@ mongoose.connect(dbConfig.url)
 
 const app = express();
 app.use(logger('dev'));
-
+app.use(fileUpload());
 require('./routes/image.route')(app);
 app.listen('3000', err => {
     console.error("Server listening on localhost:3000");

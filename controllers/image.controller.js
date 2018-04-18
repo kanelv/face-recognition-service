@@ -1,5 +1,4 @@
 const Image = require('../models/image.model');
-const fileUpload = require('express-fileupload');
 
 // Create and Save a new Image
 exports.create = (req, res) => {
@@ -15,21 +14,27 @@ exports.create = (req, res) => {
 
     let imageFile = req.files.img;
     let name = imageFile.name;
-    var {idUser, idImg} = imageFile.name.split('_');
+    console.log(name);
+    var [idUser, idImg] = imageFile.name.split('_');
+    console.log(idUser);
     var imgPath = "./uploadImg/" + name;
+    console.log(imgPath);
+
     const image = new Image({
         idUser: idUser || "Unid User",
         idImg: idImg,
         imgPath: imgPath
     });
-    imageFile.mv(imgPath, (err) => {
+
+    imageFile.mv(imgPath, (err, image) => {
         if (err) return res.status(500).send(err);
-        image.save().then(data => {
-            res.send(data);
-        }).catch(err => {
-            res.status(500).send({
-                message: err.message || "Some error occured while creating the Image on Database"
-            });
+        console.log('save file here');
+    });
+    image.save().then(data => {
+        res.send(data);
+    }).catch(err => {
+        res.status(500).send({
+            message: err.message || "Some error occured while creating the Image on Database"
         });
     });
 }

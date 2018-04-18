@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-console.log('models here');
+
 const ImgSchema = mongoose.Schema({
     idUser: String,
     idImg: String,

@@ -18,6 +18,7 @@ const app = express();
 app.use(logger('dev'));
 app.use(fileUpload());
 require('./routes/image.route')(app);
+require('./routes/user.route')(app);
 app.listen('3000', err => {
     console.error("Server listening on localhost:3000");
 });

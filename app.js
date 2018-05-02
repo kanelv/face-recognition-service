@@ -6,7 +6,7 @@ const fileUpload = require('express-fileupload');
 const dbConfig = require('./config/database.config');
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
-mongoose.connect(dbConfig.url)
+mongoose.connect(dbConfig.urlreal)
 .then(() => {
     console.log("Successfully connected to the database");
 }).catch(err => {
@@ -17,8 +17,12 @@ mongoose.connect(dbConfig.url)
 const app = express();
 app.use(logger('dev'));
 app.use(fileUpload());
+
+// route
 require('./routes/image.route')(app);
-require('./routes/user.route')(app);
+//require('./routes/user.route')(app);
+
+// listen on port
 app.listen('3000', err => {
     console.error("Server listening on localhost:3000");
 });

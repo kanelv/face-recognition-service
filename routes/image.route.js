@@ -9,5 +9,5 @@ module.exports = (app) => {
     app.get('/images/number', image.number);
     // to get Image base64
     // get: localhost:3000/images/2
-    app.get('/images/:idUser', image.getImagebyIdUser)
+    app.get('/images/:idUser', image.findOne)
 }

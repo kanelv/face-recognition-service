@@ -52,7 +52,7 @@ exports.number = (req, res) =>{
 }
 
 // get Imge by idUser
-exports.getImagebyIdUser = (req, res) => {
+exports.findOne = (req, res) => {
     var idUser = req.params.idUser;
     Image.findOne({idUser: idUser}).sort({createdAt: -1}).exec(function(err, image){
         if (err) return res.status(500).send({

@@ -1,4 +1,5 @@
 const Image = require('../models/image.model');
+var fs = require('fs');
 
 // Create and Save a new Image
 exports.create = (req, res) => {
@@ -16,6 +17,7 @@ exports.create = (req, res) => {
     let name = imageFile.name;
     console.log(name);
     var [idUser, idImg] = imageFile.name.split('_');
+    idImg = idImg.split('.')[0]
     console.log(idUser);
     var imgPath = "./uploadImg/" + name;
     console.log(imgPath);
@@ -37,4 +39,35 @@ exports.create = (req, res) => {
             message: err.message || "Some error occured while creating the Image on Database"
         });
     });
+},
+
+// get number to assign idImg
+exports.number = (req, res) =>{
+    Image.findOne().sort({createdAt: -1}).exec(function(err, image){
+        if (err) return res.status(500).send({
+            message: err.message || 'Some error occured while get number Image'
+        });        
+        res.send(image.idImg);
+    });
+}
+
+// get Imge by idUser
+exports.getImagebyIdUser = (req, res) => {
+    var idUser = req.params.idUser;
+    Image.findOne({idUser: idUser}).sort({createdAt: -1}).exec(function(err, image){
+        if (err) return res.status(500).send({
+            message: err.message || 'Some error occured while get image by idUser'
+        });
+        imageName = image.idUser + '_' + image.idImg + '.jpg';
+        base64str = base64_encode(image.imgPath)
+        res.send({
+            imageName: imageName,
+            base64str: base64str
+        })
+    })
+}
+
+function base64_encode(file) {
+    var bitmap = fs.readFileSync(file);
+    return new Buffer(bitmap).toString('base64');
 }

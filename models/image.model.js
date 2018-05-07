@@ -1,9 +1,9 @@
 const mongoose = require("mongoose");
 
 const ImgSchema = mongoose.Schema({
-    idUser: String,
-    idImg: String,
-    imgPath: String
+    UserId: String,
+    ImgId: String,
+    ImgPath: String
 }, {
     timestamps: true
 });

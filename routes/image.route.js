@@ -11,9 +11,9 @@ module.exports = (app) => {
 
     // to get Image base64
     // get: localhost:3000/images/2
-    app.get('/images/:idUser', image.findOne);
+    app.get('/images/:UserId', image.findOne);
 
     // Delete a Image with idImg
     // delete: localhost:3000/image/3
-    app.delete('/images/:idImg', image.delete);
+    app.delete('/images/:ImgId', image.delete);
 }

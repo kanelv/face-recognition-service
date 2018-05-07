@@ -15,18 +15,18 @@ exports.create = (req, res) => {
     
     var imageFile = req.files.img;
     getNumber().then( number => {
-        var idUser = imageFile.name.split('_')[0]
-        var idImg = number + 1
-        var imgPath = "./uploadImg/" + idUser + "_" + idImg + ".jpg";
-        console.log(imgPath);
+        var UserId = imageFile.name.split('_')[0]
+        var ImgId = number + 1
+        var ImgPath = "./uploadImg/" + UserId + "_" + ImgId + ".jpg";
+        console.log(ImgPath);
 
         var image = new Image({
-            idUser: idUser || "Unid User",
-            idImg: idImg,
-            imgPath: imgPath
+            UserId: UserId || "Unid User",
+            ImgId: ImgId,
+            ImgPath: ImgPath
         });
 
-        imageFile.mv(imgPath, (err, image) => {
+        imageFile.mv(ImgPath, (err, image) => {
             if (err) return res.status(500).send(err);
             console.log('save file here');
         });
@@ -40,33 +40,33 @@ exports.create = (req, res) => {
     });
 }
 
-// get number to assign idImg
+// get number to assign ImgId
 exports.number = (req, res) =>{
     Image.findOne().sort({createdAt: -1}).exec(function(err, image){
         if (err) return res.status(500).send({
             message: err.message || 'Some error occured while get number Image'
         });        
-        res.send(image.idImg);
+        res.send(image.ImgId);
     });
 }
 
-// get Imge last of User by idUser
+// get Imge last of User by UserId
 exports.findOne = (req, res) => {
-    var idUser = req.params.idUser;
-    console.log(idUser);
-    Image.findOne({idUser: idUser}).sort({createdAt: -1}).exec(function(err, image) {
+    var UserId = req.params.UserId;
+    console.log(UserId);
+    Image.findOne({UserId: UserId}).sort({createdAt: -1}).exec(function(err, image) {
         if (err) return res.status(500).send({
-            message: err.message || 'Some error occured while get image by idUser'
+            message: err.message || 'Some error occured while get image by UserId'
         });
-        imageName = image.idUser + '_' + image.idImg + '.jpg';
-        base64str = base64_encode(image.imgPath)
+        imageName = image.UserId + '_' + image.ImgId + '.jpg';
+        base64str = base64_encode(image.ImgPath)
         res.send({
             imageName: imageName,
             base64str: base64str
         })
     })
 
-    // Image.find({idUser: idUser}).sort({createdAt: -1}).then(data => {
+    // Image.find({UserId: UserId}).sort({createdAt: -1}).then(data => {
     //     console.log(data);
     //     res.send({
     //         notify: "successful"
@@ -78,17 +78,17 @@ exports.findOne = (req, res) => {
     //     })
     // })
      
-    // Image.findOne({idUser: idUser}).then(data => {
+    // Image.findOne({UserId: UserId}).then(data => {
     //     data.sort({createdAt: -1}).then(data => {
-    //         imageName = image.idUser + '_' + image.idImg + '.jpg';
-    //         base64str = base64_encode(image.imgPath)
+    //         imageName = image.UserId + '_' + image.ImgId + '.jpg';
+    //         base64str = base64_encode(image.ImgPath)
     //         res.send({
     //             imageName: imageName,
     //             base64str: base64str
     //         })
     //     }).catch(err => {
     //         res.status(500).send({
-    //             message: err.message || 'Some error occured while get image by idUser'
+    //             message: err.message || 'Some error occured while get image by UserId'
     //         })
     //     })
     // }).catch(err => {
@@ -99,19 +99,19 @@ exports.findOne = (req, res) => {
 }
 
 exports.delete = (req, res) => {
-    var idImg = req.params.idImg;
-    Image.findOneAndRemove({idImg: idImg})
+    var ImgId = req.params.ImgId;
+    Image.findOneAndRemove({ImgId: ImgId})
     .then(image => {
         if(!image) {
             return res.status(404).send({
-                message: "Image not found with idImg" + idImg
+                message: "Image not found with ImgId" + ImgId
             });
         }
 
         try {
-            fs.unlinkSync(image.imgPath);
+            fs.unlinkSync(image.ImgPath);
             return res.status(200).send({
-                message: "Successfully deleted " + image.idUser + "_" + image.idImg + "jpg"
+                message: "Successfully deleted " + image.UserId + "_" + image.ImgId + "jpg"
             })
         } catch (err) {
             throw err
@@ -119,7 +119,7 @@ exports.delete = (req, res) => {
     })
 }
 
-// get number Image to ser idImg
+// get number Image to ser ImgId
 function getNumber() {
     return new Promise((resolve, reject) => {
         Image.count().exec(function(err, number) {

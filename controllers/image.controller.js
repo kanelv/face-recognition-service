@@ -1,4 +1,5 @@
 const Image = require('../models/image.model');
+const User = require('../models/user.model')
 const fs = require('fs');
 
 // Create and Save a new Image
@@ -53,25 +54,53 @@ exports.number = (req, res) =>{
 // get Imge last of User by userid
 exports.findOne = (req, res) => {
     var userid = req.params.userid;
+    var img
     console.log(userid);
+
     Image.findOne({userid: userid}).sort({createdAt: -1}).exec(function(err, image) {
         if (err) return res.status(500).send({
             message: err.message || 'Some error occured while get image by userid'
         });
-        imageName = image.userid + '_' + image.imgid + '.jpg';
-        base64str = base64_encode(image.imgpath)
-        res.send({
+        var imageName = image.userid + '_' + image.imgid + '.jpg';
+        var base64str = base64_encode(image.imgpath)
+        img = {
             imageName: imageName,
             base64str: base64str
+        };
+    });
+    console.log(img)
+    User.findOne({userid: userid}).exec(function(err, user) {
+        if (err) return res.status(500).send({
+            message: err.message || 'Some error occured while get image by userid'
+        });
+        
+        res.status(200).send({
+            img: img,
+            user: user
         })
     })
 
-    // Image.find({userid: userid}).sort({createdAt: -1}).then(data => {
-    //     console.log(data);
-    //     res.send({
-    //         notify: "successful"
+    // Image.findOne({userid: userid}).sort({createdAt: -1}).then(data => {        
+    //     var imageName = image.userid + '_' + image.imgid + '.jpg';
+    //     var base64str = base64_encode(image.imgpath)
+    //     var img = {
+    //         imageName: imageName,
+    //         base64str: base64str
+    //     };
+    //     resolve(img);
+    // }).then(data => {
+    //     User.findOne({userid: userid}).exec(function(err, user) {
+    //         if (err) return res.status(500).send({
+    //             message: err.message || 'Some error occured while get image by userid'
+    //         });
+            
+    //         res.status(200).send({
+    //             img: img,
+    //             user: user
+    //         })
     //     })
-    // }).catch(err => {
+    // })
+    // catch(err => {
     //     console.log(err);
     //     res.send({
     //         notify: "Error dcm"

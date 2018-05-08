@@ -1,5 +1,5 @@
 [
-    {"userid": "1", "fullname": "Le Van Cuong", "email": "cuonglv@danang.com", "address": "Viet Nam"},
-    {"userid": "2", "fullname": "Nguyen Thanh Liem", "email": "liemnt@danang.com", "address": "Dong Lao"},
-    {"userid": "3", "fullname": "Nguyen Thanh Hai", "email": "haint@danang.com", "address": "Dong Lao"}
+    {"userid": "1", "fullname": "Le Van Cuong", "email": "cuonglv@danang.com", "class": "13T2", "address": "Viet Nam"},
+    {"userid": "2", "fullname": "Nguyen Thanh Liem", "email": "liemnt@danang.com", "class": "11T1", "address": "Dong Lao"},
+    {"userid": "3", "fullname": "Nguyen Thanh Hai", "email": "haint@danang.com", "class": "14T3", "address": "Dong Lao"}
 ]

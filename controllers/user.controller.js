@@ -12,17 +12,20 @@ exports.create = (req, res) => {
         console.log(req.body.userid)
         console.log(req.body.fullname)
         console.log(req.body.email)
+        console.log(req.body.class)
         console.log(req.body.address)
     }
     var userid = req.body.userid;
     var fullname = req.body.fullname;
     var email = req.body.email;
+    var classA = req.body.class;
     var address = req.body.address;
     
     var UserData =  new User({
         userid: userid,
         fullname: fullname,
         email: email,
+        class: classA,
         address: address
     });
 
@@ -63,12 +66,17 @@ exports.update = (req, res) => {
     }
 
     var userid = req.params.userid;
+    var fullname = req.body.fullname;
+    var email = req.body.email;
+    var classA = req.body.class;
+    var address = req.body.address;
 
     User.findOneAndUpdate({userid: userid}, {
         userid: userid,
-        fullname: req.body.fullname,
-        email: req.body.email,
-        address: req.body.address
+        fullname: fullname,
+        email: email,
+        class: classA,
+        address: address
     }).then(user => {
         if(!user) {
             return res.status(404).send({

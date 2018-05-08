@@ -1,0 +1,5 @@
+[
+    {"userid": "1", "fullname": "Le Van Cuong", "email": "cuonglv@danang.com", "address": "Viet Nam"},
+    {"userid": "2", "fullname": "Nguyen Thanh Liem", "email": "liemnt@danang.com", "address": "Dong Lao"},
+    {"userid": "3", "fullname": "Nguyen Thanh Hai", "email": "haint@danang.com", "address": "Dong Lao"}
+]

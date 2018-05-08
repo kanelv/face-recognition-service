@@ -7,7 +7,7 @@ exports.create = (req, res) => {
 
     if (!req.files) {
         return res.status(400).send({
-            message: "No files ware uploaded"
+            message: "No files were uploaded"
         });
     } else { 
         console.log(req.files); 
@@ -15,18 +15,18 @@ exports.create = (req, res) => {
     
     var imageFile = req.files.img;
     getNumber().then( number => {
-        var UserId = imageFile.name.split('_')[0]
-        var ImgId = number + 1
-        var ImgPath = "./uploadImg/" + UserId + "_" + ImgId + ".jpg";
-        console.log(ImgPath);
+        var userid  = imageFile.name.split('_')[0]
+        var imgid   = (number + 1).toString();
+        var imgpath = "./uploadImg/" + userid + "_" + imgid + ".jpg";
+        console.log(imgpath);
 
         var image = new Image({
-            UserId: UserId || "Unid User",
-            ImgId: ImgId,
-            ImgPath: ImgPath
+            userid: userid || "Unid User",
+            imgid: imgid,
+            imgpath: imgpath
         });
 
-        imageFile.mv(ImgPath, (err, image) => {
+        imageFile.mv(imgpath, (err, image) => {
             if (err) return res.status(500).send(err);
             console.log('save file here');
         });
@@ -40,33 +40,33 @@ exports.create = (req, res) => {
     });
 }
 
-// get number to assign ImgId
+// get number to assign imgid
 exports.number = (req, res) =>{
     Image.findOne().sort({createdAt: -1}).exec(function(err, image){
         if (err) return res.status(500).send({
             message: err.message || 'Some error occured while get number Image'
         });        
-        res.send(image.ImgId);
+        res.send(image.imgid);
     });
 }
 
-// get Imge last of User by UserId
+// get Imge last of User by userid
 exports.findOne = (req, res) => {
-    var UserId = req.params.UserId;
-    console.log(UserId);
-    Image.findOne({UserId: UserId}).sort({createdAt: -1}).exec(function(err, image) {
+    var userid = req.params.userid;
+    console.log(userid);
+    Image.findOne({userid: userid}).sort({createdAt: -1}).exec(function(err, image) {
         if (err) return res.status(500).send({
-            message: err.message || 'Some error occured while get image by UserId'
+            message: err.message || 'Some error occured while get image by userid'
         });
-        imageName = image.UserId + '_' + image.ImgId + '.jpg';
-        base64str = base64_encode(image.ImgPath)
+        imageName = image.userid + '_' + image.imgid + '.jpg';
+        base64str = base64_encode(image.imgpath)
         res.send({
             imageName: imageName,
             base64str: base64str
         })
     })
 
-    // Image.find({UserId: UserId}).sort({createdAt: -1}).then(data => {
+    // Image.find({userid: userid}).sort({createdAt: -1}).then(data => {
     //     console.log(data);
     //     res.send({
     //         notify: "successful"
@@ -78,17 +78,17 @@ exports.findOne = (req, res) => {
     //     })
     // })
      
-    // Image.findOne({UserId: UserId}).then(data => {
+    // Image.findOne({userid: userid}).then(data => {
     //     data.sort({createdAt: -1}).then(data => {
-    //         imageName = image.UserId + '_' + image.ImgId + '.jpg';
-    //         base64str = base64_encode(image.ImgPath)
+    //         imageName = image.userid + '_' + image.imgid + '.jpg';
+    //         base64str = base64_encode(image.imgpath)
     //         res.send({
     //             imageName: imageName,
     //             base64str: base64str
     //         })
     //     }).catch(err => {
     //         res.status(500).send({
-    //             message: err.message || 'Some error occured while get image by UserId'
+    //             message: err.message || 'Some error occured while get image by userid'
     //         })
     //     })
     // }).catch(err => {
@@ -99,19 +99,19 @@ exports.findOne = (req, res) => {
 }
 
 exports.delete = (req, res) => {
-    var ImgId = req.params.ImgId;
-    Image.findOneAndRemove({ImgId: ImgId})
+    var imgid = req.params.imgid;
+    Image.findOneAndRemove({imgid: imgid})
     .then(image => {
         if(!image) {
             return res.status(404).send({
-                message: "Image not found with ImgId" + ImgId
+                message: "Image not found with imgid" + imgid
             });
         }
 
         try {
-            fs.unlinkSync(image.ImgPath);
+            fs.unlinkSync(image.imgpath);
             return res.status(200).send({
-                message: "Successfully deleted " + image.UserId + "_" + image.ImgId + "jpg"
+                message: "Successfully deleted " + image.userid + "_" + image.imgid + "jpg"
             })
         } catch (err) {
             throw err
@@ -119,12 +119,15 @@ exports.delete = (req, res) => {
     })
 }
 
-// get number Image to ser ImgId
+// get number Image to ser imgid
 function getNumber() {
     return new Promise((resolve, reject) => {
-        Image.count().exec(function(err, number) {
+        Image.findOne().sort({createdAt: -1}).exec(function(err, image) {
             if (err) reject(err);
-            else resolve(number);
+            else if(!image)
+                resolve(0)
+                else
+                resolve(parseInt(image.imgid));
         })
     })
 }

@@ -4,12 +4,12 @@ module.exports = (app) => {
     // Create a new User
     app.post('/users', users.create);
 
-    // Retrieve a single User with idUser
-    app.get('/users/:UserId', users.findOne);
+    // Retrieve a single User with userid
+    app.get('/users/:userid', users.findOne);
 
-    // Update a User with UserId
-    app.put('/users/:UserId', users.update);
+    // Update a User with userid
+    app.put('/users/:userid', users.update);
 
-    // Delete a User with UserId
+    // Delete a User with userid
     app.delete('/users/:UserId', users.delete);
 }

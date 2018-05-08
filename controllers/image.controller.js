@@ -62,10 +62,12 @@ exports.findOne = (req, res) => {
             message: err.message || 'Some error occured while get image by userid'
         });
         var imageName = image.userid + '_' + image.imgid + '.jpg';
-        var base64str = base64_encode(image.imgpath)
+        var base64str = base64_encode(image.imgpath);
+        var createdAt = image.createdAt;
         img = {
             imageName: imageName,
-            base64str: base64str
+            base64str: base64str,
+            createdAt: createdAt
         };
     });
     console.log(img)

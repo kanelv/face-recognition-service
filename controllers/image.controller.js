@@ -83,9 +83,11 @@ exports.findOne = (req, res) => {
     // Image.findOne({userid: userid}).sort({createdAt: -1}).then(data => {        
     //     var imageName = image.userid + '_' + image.imgid + '.jpg';
     //     var base64str = base64_encode(image.imgpath)
+    //     var createdAt = image.createdAt;
     //     var img = {
     //         imageName: imageName,
-    //         base64str: base64str
+    //         base64str: base64str,
+    //         createdAt: createdAt
     //     };
     //     resolve(img);
     // }).then(data => {

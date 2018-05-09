@@ -57,32 +57,69 @@ exports.findOne = (req, res) => {
     var img
     console.log(userid);
 
-    Image.findOne({userid: userid}).sort({createdAt: -1}).exec(function(err, image) {
-        if (err) return res.status(500).send({
-            message: err.message || 'Some error occured while get image by userid'
-        });
-        var imageName = image.userid + '_' + image.imgid + '.jpg';
-        var base64str = base64_encode(image.imgpath);
-        var createdAt = image.createdAt;
-        img = {
-            imageName: imageName,
-            base64str: base64str,
-            createdAt: createdAt
-        };
-    });
-    console.log(img)
-    User.findOne({userid: userid}).exec(function(err, user) {
-        if (err) return res.status(500).send({
-            message: err.message || 'Some error occured while get image by userid'
-        });
-        
-        res.status(200).send({
-            img: img,
-            user: user
-        })
-    })
+    // Image.findOne({userid: userid}).sort({createdAt: -1}).exec(function(err, image) {
+    //     if (err) return res.status(500).send({
+    //         message: err.message || 'Some error occured while get image by userid'
+    //     });
+    //     var imageName = image.userid + '_' + image.imgid + '.jpg';
+    //     var base64str = base64_encode(image.imgpath);
+    //     var createdAt = image.createdAt;
+    //     img = {
+    //         imageName: imageName,
+    //         base64str: base64str,
+    //         createdAt: createdAt
+    //     };
+    // });
 
-    // Image.findOne({userid: userid}).sort({createdAt: -1}).then(data => {        
+    // User.findOne({userid: userid}).exec(function(err, user) {
+    //     if (err) return res.status(500).send({
+    //         message: err.message || 'Some error occured while get image by userid'
+    //     });
+        
+    //     res.status(200).send({
+    //         img: img,
+    //         user: user
+    //     })
+    // });
+    new Promise((resolve, reject) => {
+        Image.findOne({userid: userid}).sort({createdAt: -1}).exec(function(err, image) {
+            if (err) reject(err)            
+            var imageName = image.userid + '_' + image.imgid + '.jpg';
+            var base64str = base64_encode(image.imgpath);
+            var createdAt = image.createdAt;
+            img = {
+                imageName: imageName,
+                base64str: base64str,
+                createdAt: createdAt
+            };
+            resolve(img);
+        });
+    }).then(img => {
+        User.findOne({userid: userid}).exec(function(err, data) {                        
+            if (err) res.status(500).send({
+                message: err.message || 'Some error occured while get image by userid'
+            });                    
+            else            
+            var fullname = data.fullname;
+            var email = data.email;
+            var classA = data.class;
+            var address = data.address;
+                res.status(200).send({
+                            img: img,
+                            user: {
+                                fullname: fullname,
+                                email: email,
+                                class: classA,
+                                address: address
+                            }
+                        });
+        });
+    }).catch(err => {
+        res.status(500).send({
+            message: err.message
+        });
+    });    
+    // Image.findOne({userid: userid}).sort({createdAt: -1}).then(image => {        
     //     var imageName = image.userid + '_' + image.imgid + '.jpg';
     //     var base64str = base64_encode(image.imgpath)
     //     var createdAt = image.createdAt;
@@ -92,10 +129,10 @@ exports.findOne = (req, res) => {
     //         createdAt: createdAt
     //     };
     //     resolve(img);
-    // }).then(data => {
+    // }).then(img => {
     //     User.findOne({userid: userid}).exec(function(err, user) {
     //         if (err) return res.status(500).send({
-    //             message: err.message || 'Some error occured while get image by userid'
+    //             message: 'Some error occured while get image by userid'
     //         });
             
     //         res.status(200).send({
@@ -103,11 +140,13 @@ exports.findOne = (req, res) => {
     //             user: user
     //         })
     //     })
-    // })
-    // catch(err => {
+    //     reject({
+    //         message: "Nothing on you"
+    //     });
+    // }).catch(err => {
     //     console.log(err);
-    //     res.send({
-    //         notify: "Error dcm"
+    //     res.status(500).send({
+    //         message: err.message || 'Some error occured while get image by userid'
     //     })
     // })
      
@@ -144,7 +183,7 @@ exports.delete = (req, res) => {
         try {
             fs.unlinkSync(image.imgpath);
             return res.status(200).send({
-                message: "Successfully deleted " + image.userid + "_" + image.imgid + "jpg"
+                message: "Successfully deleted " + image.userid + "_" + image.imgid + ".jpg"
             })
         } catch (err) {
             throw err

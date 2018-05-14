@@ -171,16 +171,14 @@ exports.listAll = (req, res) => {
             })
         }
     }).then(data => {        
-        res.write("[");        
         for (var k in listAll) {
-            if(!data.includes(k)) {
-                                
+            if(!data.includes(k)) {                
                 res.write(JSON.stringify(listAll[k]) + ",");
             }
         }
     }).then(() => {
         // res.write("}")
-        res.end("]");
+        res.end();
     }).catch(err => {
         throw err;
     });

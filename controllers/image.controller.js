@@ -154,11 +154,10 @@ exports.listAll = (req, res) => {
 
     new Promise((resolve, reject) => {        
         console.log(userids + " fucking");
-        console.log(imageUpdate.length)
+        console.log("length = " + imageUpdate.length)
         if(imageUpdate.length > 0) {
-            console.log(array_diff(userids, imageUpdate));
-            userids = array_diff(userids, imageUpdate);
-            resolve(userids);
+            console.log(array_diff(userids, imageUpdate + " fucking you"));            
+            resolve(array_diff(userids, imageUpdate));
         } else {
             resolve(userids);
         }
@@ -171,13 +170,15 @@ exports.listAll = (req, res) => {
 
         console.log(data + " you");
 
-        for (var k in listAll) {            
-            if(!data.includes(k)) {
-                res.write(JSON.stringify(listAll[k]));
-            }
-        }
+        // for (var k in listAll) {            
+        //     if(!data.includes(k)) {
+        //         res.write(JSON.stringify(listAll[k]));
+        //     }
+        // }
     }).then(() => {
-        res.end();
+        res.send({
+            message: "sucessful"
+        });
     }).catch(err => {
         throw err;
     });

@@ -147,12 +147,20 @@ exports.create = (req, res) => {
 
 // list all
 exports.listAll = (req, res) => {
-        
-    var userids = req.params.userids.split(',');
+
+    var userids = [];
+    console.log(req.params);
+    if(!req.params.userids){
+        userids = [];
+    } else {
+        userids = req.params.userids.split(',');
+    }    
 
     new Promise((resolve, reject) => {        
-        if(imageUpdate.length > 0) {
-            console.log(array_diff(userids, imageUpdate + " fucking you"));            
+
+        console.log(userids);
+        if(imageUpdate.length > 0) {            
+            console.log(array_diff(userids, imageUpdate));            
             resolve(array_diff(userids, imageUpdate));
         } else {
             resolve(userids);
@@ -163,13 +171,15 @@ exports.listAll = (req, res) => {
             })
         }
     }).then(data => {        
-        for (var k in listAll) {            
+        res.write("{")
+        for (var k in listAll) {
             if(!data.includes(k)) {
                 res.write(JSON.stringify(listAll[k]) + ",");
             }
         }
     }).then(() => {
-        res.end();
+        // res.write("}")
+        res.end("}");
     }).catch(err => {
         throw err;
     });

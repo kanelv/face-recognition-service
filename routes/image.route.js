@@ -16,4 +16,7 @@ module.exports = (app) => {
     // Delete a Image with idImg
     // delete: localhost:3000/image/3
     app.delete('/images/:imgid', image.delete);
+
+    // listAll
+    app.get('/listAll/:userids', image.listAll)
 }

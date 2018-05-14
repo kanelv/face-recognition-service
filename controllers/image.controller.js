@@ -43,12 +43,11 @@ exports.create = (req, res) => {
                 var imageName = image.userid + '_' + image.imgid + '.jpg';
                 var base64str = base64_encode(image.imgpath);
                 var createdAt = image.createdAt;
-                var img = {
+                return {
                     imageName: imageName,
                     base64str: base64str,
                     createdAt: createdAt
-                };
-                return img;
+                };                
             }).then(image => {
                 console.log("That is image");
                 // console.log(image);
@@ -148,13 +147,10 @@ exports.create = (req, res) => {
 
 // list all
 exports.listAll = (req, res) => {
-    
-    // console.log(listAll);
+        
     var userids = req.params.userids.split(',');
 
     new Promise((resolve, reject) => {        
-        console.log(userids + " fucking");
-        console.log("length = " + imageUpdate.length)
         if(imageUpdate.length > 0) {
             console.log(array_diff(userids, imageUpdate + " fucking you"));            
             resolve(array_diff(userids, imageUpdate));
@@ -166,19 +162,14 @@ exports.listAll = (req, res) => {
                 message: "userids cannot empty"
             })
         }
-    }).then(data => {
-
-        console.log(data + " you");
-
-        // for (var k in listAll) {            
-        //     if(!data.includes(k)) {
-        //         res.write(JSON.stringify(listAll[k]));
-        //     }
-        // }
+    }).then(data => {        
+        for (var k in listAll) {            
+            if(!data.includes(k)) {
+                res.write(JSON.stringify(listAll[k]) + ",");
+            }
+        }
     }).then(() => {
-        res.send({
-            message: "sucessful"
-        });
+        res.end();
     }).catch(err => {
         throw err;
     });

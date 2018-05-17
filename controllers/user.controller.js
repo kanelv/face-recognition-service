@@ -1,5 +1,7 @@
 const User = require('../models/user.model');
-
+const Image = require('../models/image.model');
+var listResult = require('./image.controller').listResult;
+const del = require('del');
 // Create new User
 exports.create = (req, res) => {
     console.error("Hey! This is new user");
@@ -64,13 +66,12 @@ exports.update = (req, res) => {
             message: "User fullname can not be empty"
         });
     }
-
     var userid = req.params.userid;
     var fullname = req.body.fullname;
     var email = req.body.email;
     var classA = req.body.class;
     var address = req.body.address;
-
+    
     User.findOneAndUpdate({userid: userid}, {
         userid: userid,
         fullname: fullname,
@@ -82,16 +83,72 @@ exports.update = (req, res) => {
             return res.status(404).send({
                 message: "User not found with userid " + userid
             })
-        }
-        res.send(user);
+        } else {
+            if(!listResult[userid]){
+                listResult[userid] = {user:{
+                    fullname: fullname,
+                    email: email,
+                    class: classA,
+                    address: address    
+                }}
+            } else {
+                listResult[userid].user.fullname = fullname;
+                listResult[userid].user.email = email;
+                listResult[userid].user.class = classA;
+                listResult[userid].user.address = address;
+            }
+        };
+        console.log(listResult[userid])
+        res.status(200).send({
+            message: "Update successfull"
+        });
     }).catch(err => {
         return res.status(500).send({
-            message: "Error updating user with userid " + userid
+            message: err.message || "Error updating user with userid " + userid
         });
     });
 }
 
 // Delete a User with the specified userid in the request
 exports.delete = (req, res) => {
+    var userid = req.params.userid;
+    
+    if(!listResult[userid]){
+        delete listResult[userid];
+    }
 
+    User.findOneAndRemove({userid: userid})
+    .then(user => {
+        if(!user) {
+            return res.status(400).send({
+                message: "User not found with userid " + userid
+            });
+        }
+        Image.remove({userid: userid})
+        .then(() => {
+            del(["./uploadImg/"+ userid + "_*.jpg"])
+            .then(paths => {
+                if(!paths){
+                    return res.status(400).send({
+                        message: "Can not found image to delete by userid: " + userid
+                    });
+                }
+                return res.status(200).send({
+                    message: "Successfully deleted have " + userid        
+                });            
+            }).catch(err => {
+                return res.status(500).send({
+                    message: err.message || "Error delete image with userid " + userid
+                });
+            });
+        }).catch(err => {
+            return res.status(500).send({
+                message: err.message || "Error remove image with userid " + userid
+            });
+        });
+    }).catch(err => {
+        return res.status(500).send({
+            message: err.message || "Error removing user with userid " + userid
+        });
+    })
 }

@@ -11,5 +11,7 @@ module.exports = (app) => {
     app.put('/users/:userid', users.update);
 
     // Delete a User with userid
-    app.delete('/users/:UserId', users.delete);
+    app.delete('/users/:userid', users.delete);
+
+    // app.get('/view', users.view);
 }

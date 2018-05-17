@@ -39,8 +39,10 @@ app.use((req, res, next) => {
 
     // Pass to next layer of middleware
     next();
-})
+});
+
 app.disable('etag');
+
 // route
 require('./routes/image.route')(app);
 require('./routes/user.route')(app);

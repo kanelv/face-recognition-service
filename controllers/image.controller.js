@@ -2,7 +2,12 @@ const Image = require('../models/image.model');
 const User = require('../models/user.model')
 const fs = require('fs');
 
-var listAll = [];
+var listResult = [];
+module.exports.listResult = listResult;
+
+var ahihi = {a:"1",b:"2",c:"3"};
+module.exports.ahihi = ahihi;
+
 var imageUpdate = [];
 
 // Create and Save a new Image
@@ -126,18 +131,12 @@ exports.create = (req, res) => {
             });
         });
     }).then(data => {
-
-        // Process in to listAll array
+        // Process in to listResult array
         console.log(imageUpdate);
-        listAll[userid] = data;        
+        listResult[userid] = data;        
         res.status(200).send({
             message: "add image successfull"
         });
-        // console.log(data);
-        // res.status(200).send({
-        //     userid: userid,
-        //     data: data
-        // });
     }).catch(err => {
         return res.status(500).send({
             message: err.message || "Some error occured while creating the User"
@@ -171,9 +170,9 @@ exports.listAll = (req, res) => {
             })
         }
     }).then(data => {        
-        for (var k in listAll) {
+        for (var k in listResult) {
             if(!data.includes(k)) {                
-                res.write(JSON.stringify(listAll[k]) + ",");
+                res.write(JSON.stringify(listResult[k]) + ",");
             }
         }
     }).then(() => {
@@ -199,30 +198,6 @@ exports.findOne = (req, res) => {
     var userid = req.params.userid;
     console.log(userid);
 
-    // Image.findOne({userid: userid}).sort({createdAt: -1}).exec(function(err, image) {
-    //     if (err) return res.status(500).send({
-    //         message: err.message || 'Some error occured while get image by userid'
-    //     });
-    //     var imageName = image.userid + '_' + image.imgid + '.jpg';
-    //     var base64str = base64_encode(image.imgpath);
-    //     var createdAt = image.createdAt;
-    //     img = {
-    //         imageName: imageName,
-    //         base64str: base64str,
-    //         createdAt: createdAt
-    //     };
-    // });
-
-    // User.findOne({userid: userid}).exec(function(err, user) {
-    //     if (err) return res.status(500).send({
-    //         message: err.message || 'Some error occured while get image by userid'
-    //     });
-
-    //     res.status(200).send({
-    //         img: img,
-    //         user: user
-    //     })
-    // });
     new Promise((resolve, reject) => {
 
         // find image and covert base64
@@ -267,55 +242,6 @@ exports.findOne = (req, res) => {
             message: err.message
         });
     });
-    // Image.findOne({userid: userid}).sort({createdAt: -1}).then(image => {        
-    //     var imageName = image.userid + '_' + image.imgid + '.jpg';
-    //     var base64str = base64_encode(image.imgpath)
-    //     var createdAt = image.createdAt;
-    //     var img = {
-    //         imageName: imageName,
-    //         base64str: base64str,
-    //         createdAt: createdAt
-    //     };
-    //     resolve(img);
-    // }).then(img => {
-    //     User.findOne({userid: userid}).exec(function(err, user) {
-    //         if (err) return res.status(500).send({
-    //             message: 'Some error occured while get image by userid'
-    //         });
-
-    //         res.status(200).send({
-    //             img: img,
-    //             user: user
-    //         })
-    //     })
-    //     reject({
-    //         message: "Nothing on you"
-    //     });
-    // }).catch(err => {
-    //     console.log(err);
-    //     res.status(500).send({
-    //         message: err.message || 'Some error occured while get image by userid'
-    //     })
-    // })
-
-    // Image.findOne({userid: userid}).then(data => {
-    //     data.sort({createdAt: -1}).then(data => {
-    //         imageName = image.userid + '_' + image.imgid + '.jpg';
-    //         base64str = base64_encode(image.imgpath)
-    //         res.send({
-    //             imageName: imageName,
-    //             base64str: base64str
-    //         })
-    //     }).catch(err => {
-    //         res.status(500).send({
-    //             message: err.message || 'Some error occured while get image by userid'
-    //         })
-    //     })
-    // }).catch(err => {
-    //     res.status(500).send({
-    //         message: "User is not exist"
-    //     })
-    // });
 }
 
 exports.delete = (req, res) => {
@@ -368,9 +294,7 @@ function array_diff(a1, a2) {
 	for (var i = 0; i < a2.length; i++) {        
 		if(a[a2[i]])
             delete a[a2[i]];
-            delete a2[i];
-        // else 
-		// 	a[a2[i]] = true;        
+            delete a2[i];        
 	}
 	
 	for (var k in a) {

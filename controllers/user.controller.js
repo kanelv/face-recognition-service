@@ -113,7 +113,7 @@ exports.update = (req, res) => {
 exports.delete = (req, res) => {
     var userid = req.params.userid;
     
-    if(!listResult[userid]){
+    if(listResult[userid]){
         delete listResult[userid];
     }
 

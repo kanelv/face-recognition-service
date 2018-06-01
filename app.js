@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const logger = require('morgan');
 const fileUpload = require('express-fileupload');
-
+const PORT = process.env.PORT || 3000
 // Configuring the database
 const dbConfig = require('./config/database.config');
 const mongoose = require('mongoose');
@@ -48,6 +48,6 @@ require('./routes/image.route')(app);
 require('./routes/user.route')(app);
 
 // listen on port
-app.listen('3000', err => {
+app.listen(PORT, err => {
     console.error("Server listening on localhost:3000");
 });

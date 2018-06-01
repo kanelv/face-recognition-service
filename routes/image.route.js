@@ -18,8 +18,8 @@ module.exports = (app) => {
     app.delete('/images/:imgid', image.delete);
 
     // listAll
-    app.get('/listAll/:userids?', image.listAll)
     // app.get('/listAll/', image.listAll)
+    app.get('/listAll/:userids?', image.listAll)
 
     app.get('/images/dates/:userid', image.getDates)
 }

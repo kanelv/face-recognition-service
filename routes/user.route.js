@@ -13,5 +13,6 @@ module.exports = (app) => {
     // Delete a User with userid
     app.delete('/users/:userid', users.delete);
 
-    // app.get('/view', users.view);
+    // get all User in database
+    app.get('/all', users.getAll);
 }

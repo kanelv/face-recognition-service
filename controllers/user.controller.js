@@ -42,6 +42,7 @@ exports.create = (req, res) => {
 
 //  Find a single User with the specified userid in the request
 exports.findOne = (req, res) => {
+    console.log("Okay")
     var userid = req.params.userid    
     User.findOne({userid: userid})
     .then(user => {
@@ -150,5 +151,32 @@ exports.delete = (req, res) => {
         return res.status(500).send({
             message: err.message || "Error removing user with userid " + userid
         });
+    })
+}
+
+exports.getAll = (req, res) => {
+    
+    console.log("fucking you");
+
+    User.find({}, {
+        _id: 0,
+        userid: 1,
+        fullname: 1,
+        email: 1,
+        class: 1,
+        address: 1
+    }).then(users => {
+        console.log(users);
+        if(users.length == 0){
+            return res.status(400).send({
+                message: "Nothing images dependence userid"
+            });
+        } else {
+            res.status(200).send({
+                user: users
+            });
+        }
+    }).catch(err => {
+        throw err;
     })
 }

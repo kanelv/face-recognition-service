@@ -277,7 +277,7 @@ exports.getDates = (req, res) => {
             });
         } else {
             images.forEach( image => {
-                let date = image.createdAt.toJSON().split('T')[0]
+                let date = image.createdAt.toJSON()
                 dates.push(date);                
             })
             res.status(200).send({
@@ -288,6 +288,7 @@ exports.getDates = (req, res) => {
         throw err;
     });
 }
+
 // get number Image to set imgid
 function getNumber() {
     return new Promise((resolve, reject) => {

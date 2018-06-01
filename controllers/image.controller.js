@@ -5,9 +5,6 @@ const fs = require('fs');
 var listResult = [];
 module.exports.listResult = listResult;
 
-var ahihi = {a:"1",b:"2",c:"3"};
-module.exports.ahihi = ahihi;
-
 var imageUpdate = [];
 
 // Create and Save a new Image
@@ -132,6 +129,7 @@ exports.create = (req, res) => {
         });
     }).then(data => {
         // Process in to listResult array
+        imageUpdate = Array.from(new Set(imageUpdate));
         console.log(imageUpdate);
         listResult[userid] = data;        
         res.status(200).send({

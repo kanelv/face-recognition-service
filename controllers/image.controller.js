@@ -83,6 +83,9 @@ exports.create = (req, res) => {
                                 class: classA,
                                 address: address
                             };
+
+                            console.log(image);
+                            
                             resolve({
                                 image: image,
                                 user: user

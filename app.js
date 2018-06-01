@@ -49,5 +49,5 @@ require('./routes/user.route')(app);
 
 // listen on port
 app.listen(PORT, err => {
-    console.error("Server listening on localhost:3000");
+    console.error("Server listening on ${ PORT }");
 });

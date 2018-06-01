@@ -20,4 +20,6 @@ module.exports = (app) => {
     // listAll
     app.get('/listAll/:userids?', image.listAll)
     // app.get('/listAll/', image.listAll)
+
+    app.get('/images/dates/:userid', image.getDates)
 }

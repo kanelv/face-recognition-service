@@ -260,9 +260,34 @@ exports.delete = (req, res) => {
             } catch (err) {
                 throw err
             }
-        })
+        }).catch( err => {
+            throw err;
+        });
 }
 
+// get date of all image by userid
+exports.getDates = (req, res) => {
+    var userid = req.params.userid;
+    var dates = []
+    console.log("get images dates have " + userid);
+    Image.find({userid: userid}).then(images => {
+        if(images.length == 0){
+            return res.status(400).send({
+                message: "Nothing images dependence userid"
+            });
+        } else {
+            images.forEach( image => {
+                let date = image.createdAt.toJSON().split('T')[0]
+                dates.push(date);                
+            })
+            res.status(200).send({
+                dates: dates
+            });                       
+        }    
+    }).catch( err => {
+        throw err;
+    });
+}
 // get number Image to set imgid
 function getNumber() {
     return new Promise((resolve, reject) => {

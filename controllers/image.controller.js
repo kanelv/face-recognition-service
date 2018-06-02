@@ -41,10 +41,11 @@ exports.create = (req, res) => {
                 if (err) return res.status(500).send(err);
                 console.log('save file here');
             });
-            image.save().then(data => {
+            image.save().then( async data => {
                 var imageName = image.userid + '_' + image.imgid + '.jpg';
-                var base64str = base64_encode(image.imgpath);
                 var createdAt = image.createdAt;
+                var base64str = base64_encode(image.imgpath);                                
+
                 return {
                     imageName: imageName,
                     base64str: base64str,
@@ -57,6 +58,7 @@ exports.create = (req, res) => {
                 User.findOne({ userid: userid }).then(data => {
 
                     console.log(userid);
+                    // user isn't exist
                     if (!data) {
                         var fullname = "No Name";
                         var email = "example" + userid + "@dn.com";
@@ -85,7 +87,6 @@ exports.create = (req, res) => {
                             };
 
                             console.log(image);
-                            
                             resolve({
                                 image: image,
                                 user: user
@@ -96,6 +97,7 @@ exports.create = (req, res) => {
                             });
                         });
                     } else {
+                        // user is exist
                         var fullname = data.fullname;
                         var email = data.email;
                         var classA = data.class;
@@ -149,7 +151,7 @@ exports.create = (req, res) => {
 exports.listAll = (req, res) => {
 
     var userids = [];
-    console.log(req.params);
+    // console.log(req.params);
     if(!req.params.userids){
         userids = [];
     } else {
@@ -159,10 +161,11 @@ exports.listAll = (req, res) => {
     new Promise((resolve, reject) => {        
 
         console.log(userids);
-        if(imageUpdate.length > 0) {            
-            console.log(array_diff(userids, imageUpdate));            
+        console.log(imageUpdate);
+        if(imageUpdate.length > 0) {                        
+            // console.log(array_diff(userids, imageUpdate));
             resolve(array_diff(userids, imageUpdate));
-        } else {
+        } else {            
             resolve(userids);
         }
         if (userids == undefined) {
@@ -170,7 +173,9 @@ exports.listAll = (req, res) => {
                 message: "userids cannot empty"
             })
         }
-    }).then(data => {        
+    }).then(data => {
+        console.log("love you so much");
+        console.log(data);
         for (var k in listResult) {
             if(!data.includes(k)) {                
                 res.write(JSON.stringify(listResult[k]) + ",");
@@ -321,7 +326,7 @@ function array_diff(a1, a2) {
 	for (var i = 0; i < a2.length; i++) {        
 		if(a[a2[i]])
             delete a[a2[i]];
-            delete a2[i];        
+        delete a2[i];        
 	}
 	
 	for (var k in a) {

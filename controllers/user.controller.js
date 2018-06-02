@@ -154,9 +154,7 @@ exports.delete = (req, res) => {
     })
 }
 
-exports.getAll = (req, res) => {
-    
-    console.log("fucking you");
+exports.getAll = (req, res) => {        
 
     User.find({}, {
         _id: 0,

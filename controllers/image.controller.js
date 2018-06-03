@@ -140,7 +140,11 @@ exports.create = (req, res) => {
         res.status(200).send({
             message: "add image successfull"
         });
-    }).catch();
+    }).catch(err => {
+        return res.status(500).send({
+            message: err.message || "Some error occured while creating the User"
+        });
+    });
 }
 
 // list all

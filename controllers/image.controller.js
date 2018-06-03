@@ -41,7 +41,7 @@ exports.create = (req, res) => {
                 if (err) return res.status(500).send(err);
                 console.log('save file here');
             });
-            image.save().then( async data => {
+            image.save().then(data => {
                 var imageName = image.userid + '_' + image.imgid + '.jpg';
                 var createdAt = image.createdAt;
                 var base64str = base64_encode(image.imgpath);                                

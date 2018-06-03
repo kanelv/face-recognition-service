@@ -140,7 +140,7 @@ exports.create = (req, res) => {
         res.status(200).send({
             message: "add image successfull"
         });
-    })
+    }).catch();
 }
 
 // list all

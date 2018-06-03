@@ -7,7 +7,7 @@ const PORT = process.env.PORT || 3000
 const dbConfig = require('./config/database.config');
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
-mongoose.connect(dbConfig.urlreal)
+mongoose.connect(dbConfig.url)
 .then(() => {
     console.log("Successfully connected to the database");
 }).catch(err => {

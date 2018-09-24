@@ -5,7 +5,7 @@ requires:</br>
   install MongoDB 3.6</br>
   </br>
 1st: config db path at: </br>
-  FaceRecognitionSys/config/<br>
+  FaceRecognitionSys/config/</br>
 to connect mongodb service</br>
 2st: terminal:</br>
     npm install</br>

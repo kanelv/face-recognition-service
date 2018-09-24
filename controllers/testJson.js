@@ -1,4 +1,5 @@
-var fs = require('fs');
+const fs = require('fs');
+
 fs.readFile('jsonString.txt', (err, data) => {
-    JSON.parse(data);
-})
+  JSON.parse(data);
+});

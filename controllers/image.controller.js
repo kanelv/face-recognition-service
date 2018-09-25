@@ -27,6 +27,25 @@ function base64Encode(file) {
   return new Buffer(bitmap).toString('base64');
 }
 
+// get the difference between two arrays right
+function arrayDiff(a1, a2) {
+  const a = [];
+  const diff = [];
+  for (let i = 0; i < a1.length; i + 1) {
+    a[a1[i]] = true;
+  }
+
+  for (let i = 0; i < a2.length; i + 1) {
+    if (a[a2[i]]) delete a[a2[i]];
+    delete a2[i];
+  }
+
+  Object.keys(a).forEach(k => {
+    diff.push(k);
+  });
+  return diff;
+}
+
 // Create and Save a new Image
 exports.create = (req, res) => {
   //   console.error('Hey! This is your image');
@@ -106,7 +125,7 @@ exports.create = (req, res) => {
                       });
                     })
                     .catch(err => {
-                      return res.status(500).send({
+                      res.status(500).send({
                         message:
                           err.message ||
                           'Some error occured while creating the User'
@@ -184,19 +203,16 @@ exports.listAll = (req, res) => {
       resolve(userids);
     }
     if (userids === undefined) {
-      reject({
-        message: 'userids cannot empty'
-      });
+      reject(new Error('userids cannot empty'));
     }
   })
     .then(data => {
-      console.log('love you so much');
-      console.log(data);
-      for (var k in listResult) {
+      // console.log(data);
+      Object.keys(listResult).forEach(k => {
         if (!data.includes(k)) {
           res.write(`${JSON.stringify(listResult[k])},`);
         }
-      }
+      });
     })
     .then(() => {
       // res.write("}")
@@ -229,20 +245,16 @@ exports.findOne = (req, res) => {
       .exec((err, image) => {
         if (err) reject(err);
         else {
-          //   var imageName = image.userid + '_' + image.imgid + '.jpg';
-
-          const img = {
+          resolve({
             imageName: `${image.userid}_${image.imgid}.jpg`,
             base64str: base64Encode(image.imgpath),
             createdAt: image.createdAt
-          };
-          resolve(img);
+          });
         }
       });
-  })
-    .then(image => {
-      // find user and response
-      User.findOne({ userid: req.params.userid })
+  }).then(image => {
+    // find user and response
+    User.findOne({ userid: req.params.userid })
       .exec((err, data) => {
         if (err)
           res.status(500).send({
@@ -250,24 +262,24 @@ exports.findOne = (req, res) => {
               err.message || 'Some error occured while get image by userid'
           });
         else {
-            res.status(200).send({
-                img: image,
-                user: {
-                    fullname:  data.fullname,
-                    email: data.email,
-                    class: data.class,
-                    address: data.address
-                }
-            });
-      }
-    })
-    .catch(err => {
-      throw err;
-      res.status(500).send({
-        message: err.message
+          res.status(200).send({
+            img: image,
+            user: {
+              fullname: data.fullname,
+              email: data.email,
+              class: data.class,
+              address: data.address
+            }
+          });
+        }
+      })
+      .catch(err => {
+        res.status(500).send({
+          message: err.message
+        });
       });
-    });
-},
+  });
+};
 
 exports.delete = (req, res) => {
   Image.findOneAndRemove({ imgid: req.params.imgid })
@@ -290,7 +302,7 @@ exports.delete = (req, res) => {
     .catch(err => {
       throw err;
     });
-},
+};
 
 // get date of all image by userid
 exports.getDates = (req, res) => {
@@ -315,26 +327,6 @@ exports.getDates = (req, res) => {
     .catch(err => {
       throw err;
     });
-},
-
-// get the difference between two arrays right
-function arrayDiff(a1, a2) {
-  const a = [];
-  const diff = [];
-  for (let i = 0; i < a1.length; i + 1) {
-    a[a1[i]] = true;
-  }
-
-  for (let i = 0; i < a2.length; i + 1) {
-    if (a[a2[i]]) delete a[a2[i]];
-    delete a2[i];
-  }
-
-  for (let k in a) {
-    diff.push(k);
-  }
-
-  return diff;
-},
+};
 
 module.exports.listResult = listResult;

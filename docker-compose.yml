@@ -1,0 +1,12 @@
+version: '3'
+services:
+  facerecognition:
+    build:
+      context: .
+      dockerfile: dockerFile
+    working_dir: "/src"
+    volumes:
+      - "./:/src"
+    command: npm start 
+    ports:
+      - 3000:3000

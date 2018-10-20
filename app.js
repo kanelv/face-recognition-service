@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const compression = require('compression');
 const logger = require('morgan');
 const mongoose = require('mongoose');
 const fileUpload = require('express-fileupload');
@@ -10,7 +11,7 @@ const PORT = process.env.PORT || 3000;
 
 mongoose.Promise = global.Promise;
 mongoose
-  .connect(dbConfig.url)
+  .connect(dbConfig.urlreal, { useNewUrlParser: true })
   .then(() => {
     console.log('Successfully connected to the database');
   })
@@ -22,6 +23,7 @@ mongoose
 
 const app = express();
 
+app.use(compression());
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());

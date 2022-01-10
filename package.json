@@ -1,11 +1,13 @@
 {
   "name": "face-recognition-systems",
   "version": "1.0.0",
-  "description": "",
+  "description": "## notice:",
   "main": "app.js",
   "scripts": {
     "lint": "eslint .",
-    "start": "node app.js",
+    "build": "webpack -p",
+    "watch": "webpack --watch",
+    "start": "node diroxTest.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -16,7 +18,8 @@
     "compression": "^1.7.3",
     "del": "^3.0.0",
     "express": "^4.16.3",
-    "express-fileupload": "^0.4.0",
+    "express-fileupload": "^1.2.1",
+    "fs": "^0.0.1-security",
     "mongoose": "^5.0.15",
     "morgan": "^1.9.0",
     "nodemon": "^1.17.4"
@@ -28,6 +31,19 @@
     "eslint-config-prettier": "^3.1.0",
     "eslint-plugin-import": "^2.14.0",
     "eslint-plugin-prettier": "^2.6.2",
-    "prettier": "^1.14.3"
+    "prettier": "^1.14.3",
+    "webpack": "^4.30.0",
+    "webpack-cli": "^3.3.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/levcuong/FaceRecognitionSys.git"
+  },
+  "bugs": {
+    "url": "https://github.com/levcuong/FaceRecognitionSys/issues"
+  },
+  "homepage": "https://github.com/levcuong/FaceRecognitionSys#readme",
+  "resolutions": {
+    "**/event-stream": "^4.0.1"
   }
 }

@@ -1,17 +1,18 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const compression = require('compression');
-const logger = require('morgan');
-const mongoose = require('mongoose');
-const fileUpload = require('express-fileupload');
-const dbConfig = require('./config/database.config');
+import express from 'express';
+import bodyParser from 'body-parser';
+import compression from 'compression';
+import logger from 'morgan';
+import mongoose from 'mongoose';
+import fileUpload from 'express-fileupload';
 
 const PORT = process.env.PORT || 3000;
+
 // Configuring the database
+import { databasePath } from './config/database.config.js';
 
 mongoose.Promise = global.Promise;
 mongoose
-  .connect(dbConfig.urlreal, { useNewUrlParser: true })
+  .connect(databasePath.urlReal, { useNewUrlParser: true })
   .then(() => {
     console.log('Successfully connected to the database');
   })
@@ -57,8 +58,11 @@ app.use((req, res, next) => {
 app.disable('etag');
 
 // route
-require('./routes/image.route')(app);
-require('./routes/user.route')(app);
+import { imageRoute } from './routes/image.route.js'
+imageRoute(app);
+
+import { userRoute } from './routes/user.route.js'
+userRoute(app);
 
 // listen on port
 app.listen(PORT, err => {

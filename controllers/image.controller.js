@@ -1,12 +1,12 @@
-const fs = require('fs');
-const Image = require('../models/image.model');
-const User = require('../models/user.model');
+import * as fs from 'fs';
+import Image from '../models/image.model.js';
+import User from '../models/user.model.js';
 
 const listResult = [];
 let imageUpdate = [];
 
 // get number Image to set imgid
-function getNumber() {
+export const getNumber = () => {
   return new Promise((resolve, reject) => {
     Image.findOne()
       .sort({ createdAt: -1 })
@@ -22,13 +22,13 @@ function getNumber() {
 }
 
 // cover image to base64 string
-function base64Encode(file) {
+export const base64Encode = (file) => {
   const bitmap = fs.readFileSync(file);
   return new Buffer(bitmap).toString('base64');
 }
 
 // get the difference between two arrays right
-function arrayDiff(a1, a2) {
+export const arrayDiff  = (a1, a2) => {
   const a = [];
   const diff = [];
   for (let i = 0; i < a1.length; i + 1) {
@@ -47,7 +47,7 @@ function arrayDiff(a1, a2) {
 }
 
 // Create and Save a new Image
-exports.create = (req, res) => {
+export const create = (req, res) => {
   //   console.error('Hey! This is your image');
 
   if (!req.files) {
@@ -185,7 +185,7 @@ exports.create = (req, res) => {
 };
 
 // list all
-exports.listAll = (req, res) => {
+export const listAll = (req, res) => {
   let userids = [];
   // console.log(req.params);
   if (!req.params.userids) {
@@ -224,7 +224,7 @@ exports.listAll = (req, res) => {
 };
 
 // get number to assign imgid
-exports.number = (req, res) => {
+export const number = (req, res) => {
   Image.findOne()
     .sort({ createdAt: -1 })
     .exec((err, image) => {
@@ -237,7 +237,7 @@ exports.number = (req, res) => {
 };
 
 // get Imge last of User by userid
-exports.findOne = (req, res) => {
+export const findOne = (req, res) => {
   new Promise((resolve, reject) => {
     // find image and covert base64
     Image.findOne({ userid: req.params.userid })
@@ -281,7 +281,7 @@ exports.findOne = (req, res) => {
   });
 };
 
-exports.delete = (req, res) => {
+export const deleteOne = (req, res) => {
   Image.findOneAndRemove({ imgid: req.params.imgid })
     .then(image => {
       if (!image) {
@@ -305,7 +305,7 @@ exports.delete = (req, res) => {
 };
 
 // get date of all image by userid
-exports.getDates = (req, res) => {
+export const getDates = (req, res) => {
   const dateOfAllImage = [];
   //   console.log(`get images dates have ${req.params.userid}`);
   Image.find({ userid: req.params.userid })
@@ -328,5 +328,3 @@ exports.getDates = (req, res) => {
       throw err;
     });
 };
-
-module.exports.listResult = listResult;

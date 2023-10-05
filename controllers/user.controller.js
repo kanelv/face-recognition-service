@@ -1,12 +1,12 @@
-const del = require('del');
-const User = require('../models/user.model');
-const Image = require('../models/image.model');
-const ImageController = require('./image.controller');
+import * as del from 'del';
+import * as User from '../models/user.model.js';
+import * as Image from '../models/image.model.js';
+import * as ImageController from './image.controller.js';
 
 const listResult = ImageController.listResult;
 
 // Create new User
-exports.create = (req, res) => {
+export const create = (req, res) => {
   if (!req.body.fullname) {
     res.status(400).send({
       message: 'User content can not be empty'
@@ -33,7 +33,7 @@ exports.create = (req, res) => {
 };
 
 //  Find a single User with the specified userid in the request
-exports.findOne = (req, res) => {
+export const findOne = (req, res) => {
   //   console.log('Okay');
   User.findOne({ userid: req.params.userid })
     .then(user => {
@@ -52,7 +52,7 @@ exports.findOne = (req, res) => {
 };
 
 // Update a User with the specified userid in the request and data update
-exports.update = (req, res) => {
+export const update = (req, res) => {
   if (!req.body.fullname) {
     res.status(400).send({
       message: 'User fullname can not be empty'
@@ -103,7 +103,7 @@ exports.update = (req, res) => {
 };
 
 // Delete a User with the specified userid in the request
-exports.delete = (req, res) => {
+export const deleteOne = (req, res) => {
   if (listResult[req.params.userid]) {
     delete listResult[req.params.userid];
   }
@@ -154,7 +154,7 @@ exports.delete = (req, res) => {
     });
 };
 
-exports.getAll = (req, res) => {
+export const getAll = (req, res) => {
   User.find(
     {},
     {

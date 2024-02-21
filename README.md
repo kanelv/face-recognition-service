@@ -1,10 +1,9 @@
-# FaceRecognitionSys
-
-## notice:
+# Face Recognition API
+## Plan to re-structure to NestJS Framework and clean architecture
 
 #### using ESLint + Airbnb JavaScript Style + Prettie + VS Code.
 
-#### using ubuntu 16.04 for this instruction.
+#### using Ubuntu 16.04 for this instruction.
 
 requires:</br>
 install nodejs 8.11</br>
